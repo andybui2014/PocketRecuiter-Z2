@@ -1,0 +1,216 @@
+<?php
+$style="body {
+    background: none repeat scroll 0 0 #ededed;
+    
+}
+.container{
+     
+     font-size: 13px;
+     max-width: 90%;
+}.small{
+min-height: 60px;
+}
+.page-header{
+
+border-bottom: none;
+}
+.page-header1{
+
+border-bottom: 1px solid #ddd;
+
+}
+.has-error .form-control {
+    border-color: #a94442;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+}
+.image1 {
+    background: url('<?=URL_THEMES?>images/img_PrivacyPolicy.jpg') no-repeat ;
+
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+   
+    max-width: 200px;
+    
+    
+    
+   
+}
+.form-control{
+    width: 47%;
+}
+.popover {
+    border:none;
+    max-width: 310px;
+   /* border-right: 3px solid rgba(0, 0, 0, 0.8);*/
+   border-right: 3px solid #005595;
+    
+}
+.popover.right {
+    margin-left: -1px;
+}.popover.right > .arrow{
+    border-right-color: rgba(0, 0, 0, 0);
+    left: -7px;
+}
+.popover-content {
+    padding: 8px 4px;
+}
+#form-login .message{color: #b81900;}
+.btn-primary {
+    background-color: #2a6496;}
+	.modal {
+    
+    z-index: 1250;
+	top: 100;
+}";
+?>
+<style>
+<?php echo $style;?>
+
+</style>
+<?php echo $this->headScript()
+            ->prependFile($this->basePath() . '/js/pocket.main.js?vs=1')?>
+<?php
+//$page=$this->url('login');
+//echo "page:".$page;
+//$page1=$_SERVER['REQUEST_URI'];
+//echo "page1:".$page1;
+?>
+<div class="modal fade" tabindex="-1" role="dialog" id="openModalcheckmailFogotpass" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content modal-dialog-center">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h2 class="modal-title" id="myModalLabel" style="color:#005595">Please check mail and reset password.</h2>
+            </div>
+            <div class="modal-body login-modal" style="height:250px">
+            <div class="col-md-12" >
+			<p>
+				An email has been sent to <b><span class="mail"></span></b>. Please follow the instructions to retrieve your password.
+			</p>
+			</div>
+             
+            </div>
+            </div>
+        
+    </div>
+</div>
+</div>
+<!--Modal-->
+<!--Modal-->
+<div class="modal fade" tabindex="-1" role="dialog" id="openModalFogotpass" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content modal-dialog-center">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h2 class="modal-title" id="myModalLabel" style="color:#005595">Forgot password</h2>
+            </div>
+            <div class="modal-body login-modal" style="height:250px">
+            
+    
+             <form id="form-forgotpass" name="form-forgotpass" method="POST" action="">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                          <div class="form-group">
+						  <label><strong>Password Retrieval</strong></label>
+						  <br>Please enter your Primary Email address associated with your profile:
+                            <input value="" type="text" name="emailaddress" id="emailaddress" placeholder="Enter email" class="form-control">
+                             <span class="message" id="emailaddress_message" style="color:#b81900"></span>
+                          </div>
+                           
+                    </div>
+                    <button id="resetpass" style="width:70px" type="button" class="btn btn-primary" data-loading-text="Loading...">Ok</button>
+                </form>    
+            </div>
+            </div>
+        
+    </div>
+</div>
+</div>
+<!--Modal-->
+<div class="container" style="padding-top:40px;" >
+<div class="page-header" style="margin:0;">
+
+    <h3>
+        <span style="color:#005595;font-weight:bold;font-size:25px">Log in</span>
+        <!--<span class="text-right pull-right" style="font-size: 12px;padding-top:8px;padding-right:16px;">Already have a Pocket Recruiter account? <a style="text-decoration: none;" rel="" href="<?= URL_BASE . 'login' ?>"><span style="padding-left:5px;"><img src="<?=URL_THEMES?>images/btn_SignIn.png" width="45px"></span></a><a style="text-decoration: none;" rel="" href="<?= URL_BASE . 'register' ?>"><span style="padding-left:5px;"><img src="<?=URL_THEMES?>images/btn_Register.png" width="58px;"> </span></a></span>-->
+
+    </h3>
+</div>
+<div class="col-xs-9 page-header1" style="margin:0;">
+</div>
+    <div class="col-xs-9"  style="padding:0;padding-top:25px;border-right: 1px solid #ddd;">
+
+    <!--<div class="col-md-6" style="margin:0;padding:0">-->
+        <form id="form-login" role="form">
+        
+        <div id="login-message">
+
+        </div>
+        <div>
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input name="email" type="email" class="form-control" id="email" placeholder="Enter email" >
+                <span class="message" id="username_message"></span>
+            </div>
+            <div class="form-group">
+                <label for="credential">Password</label>
+                <input name="password"  type="password" class="form-control" id="credential" placeholder="Password">
+                <span class="message" id="password_message"></span>
+                <!--<p class="help-block" id=""><a href="reset">Forgot Password?</a></p>-->
+            </div>
+            <div class="form-group">
+                    <span style="font-size:11px;"><input name="remember" type="checkbox" id="terms"> Remember me</span>
+                    <span class="pull-right" style="padding-right:53%">
+                        <a href="javascript: void(0);" style="color:#2a6496;font-size:11px" id="fogotpass"><strong>Forgot Your Password?</strong></a>
+						<br><a href="#" style="color:#2a6496;font-size:11px"><strong>Not a Member Yet?</strong></a>
+                </span>
+            </div>
+            <!--<button data-loading-text="Loading..." id="btn-login" class="btn btn-primary" type="button">Log in </button>-->
+            <div class="form-group" style="padding-bottom:100px;padding-top:20px">
+			<span class="pull-left">
+				<img src="<?php echo $this->basePath('img/btn_logIn.png')?>" id="btn-login" style="cursor: pointer;" width="75px;">
+				</span>
+				<!--<button class="btn btn-primary" id="btn-login"><strong>&nbsp;Log in&nbsp; </strong></button>-->
+				<span class="pull-right" style="margin-right:53%;padding-right:55px">
+				<?php
+					//$page=URL_BASE . 'register' ;
+				?>
+				
+				<!--<button class="btn btn-primary" onclick="document.location='<?=$page?>'">Sign up</button>-->
+				<a href="<?php echo $this->url('register')?>"><img src="<?php echo $this->basePath('img/btn_SignUp.png')?>" id="btn-login" style="cursor: pointer;" width="75px;"></a>
+				</span>
+			</div>
+			
+			
+        </form>
+		
+       <!-- </div>-->
+    </div>
+   
+
+</div>
+    <div class="col-xs-9" style="padding:0;border-right: 1px solid #ddd; height: 150px;">
+   
+</div>
+</div>
+<!--<script src="<?=URL_THEMES.'js/pocket.main.js?vs=1';?>"></script>-->
+
+<script>
+    //Init main pocket
+    var pkMain = new pocketMain();
+    $(document).ready(function(){
+        //Login pocket
+        $('#btn-login').unbind('click').bind('click',pkMain.logIn);
+        $("#email").popover({placement:'right',content:"<span style='font-size:11px;'>You'll be asked to verify this later. This email will be used for all communication between yourself and potential clients.</span>", html:true});
+    $("#email").popover("show");
+    $('#email').tooltip({placement:'right',content:"<span style='font-size:11px;'>You'll be asked to verify this later. This email will be used for all communication between yourself and potential clients.</span>", html:true});
+    $('#email').tooltip('show');
+	
+	//
+	$("#fogotpass").click(function(){
+        $('#openModalFogotpass').modal('show')
+    });
+    })
+</script>

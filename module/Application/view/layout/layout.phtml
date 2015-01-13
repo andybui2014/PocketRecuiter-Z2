@@ -1,0 +1,223 @@
+<?php echo $this->doctype(); ?>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <?php echo $this->headTitle($this->translate('Pocket Recruiter'))->setSeparator(' - ')->setAutoEscape(false) ?>
+
+        <?php echo $this->headMeta()
+            ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+            ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+        ?>
+
+        <!-- Le styles -->
+        <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
+                        ->prependStylesheet($this->basePath() . '/css/main.css')
+                        ->prependStylesheet($this->basePath() . '/css/bootstrap-theme.min.css')
+                        ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css') ?>
+
+        <!-- Scripts -->
+        <?php echo $this->headScript()
+            ->prependFile($this->basePath() . '/js/bootstrap.min.js')
+            ->prependFile($this->basePath() . '/js/jquery.min.js')
+            ->prependFile($this->basePath() . '/js/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9',))
+            ->prependFile($this->basePath() . '/js/html5shiv.js',   'text/javascript', array('conditional' => 'lt IE 9',))
+        ; ?>
+		<style>
+
+		</style>
+    </head>
+    <body>
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal-dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body login-modal">
+                <div id="modal-content"></div>
+            </div>
+        </div>
+    </div>
+</div>
+        <nav class="navbar  navbar-default navbar-fixed-top" role="navigation">
+        <?php
+                $page=$this->url('home');
+                $page2=$this->url('register');
+                $page1=$page1=$_SERVER['REQUEST_URI'];
+                if($page==$page1 || $page2==$page1){
+              //  echo "testt2:".$page2;
+               // echo "testt1:".$page1;
+          ?>
+		 <div class="nav-ribbon navbar-header">
+            <div class="nav-ribbon-left pull-right">    
+                <a style="font_size:13px;" href="<?php echo $this->url('login')?>"><b>Sign In or Join</b></a>                
+            </div>
+        </div>
+        <?php
+        }?>
+            <div class="container">             
+                <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+              
+                <a clss=""href="<?php echo $this->url('home') ?>"><img height="52px" src="<?php echo $this->basePath('img/logo.png') ?>" alt="Zend Framework 2"/></a>
+
+                </div>
+                <?php
+                $page=$this->url('home');
+                $page1=$_SERVER['REQUEST_URI'];
+                $page2=$this->url('register');
+                if($page==$page1 || $page2==$page1){
+                
+                ?>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right" style="margin-right:0.2%;" >
+                   <li><a href="#" style="color:#333"><strong style="font-size:13px">Match Opportunity</strong></a></li>            
+                    <li><a href="#" style="color:#333"><strong style="font-size:13px">Features</strong></a></li>
+                    <li><a href="#" style="color:#333"><strong style="font-size:13px">Plans</strong></a></li>
+                    <li><a href="#" style="color:#333"><strong style="font-size:13px">Success Stones</strong></a></li>
+                    <li><a href="#" style="color:#333"><strong style="font-size:13px">Resources</strong></a></li>
+                    <li><a href="#" style="color:#333"><strong style="font-size:13px">Contact Us</strong></a></li>               
+                </ul>  
+        </div>
+         <?php
+                }
+            ?>
+        
+            </div>
+           
+            <?php
+                $url=$this->url('login');
+                $url1=$page1=$_SERVER['REQUEST_URI'];
+                if($url==$url1){
+            ?>
+            <header class="sb-page-header" style="height:50px">
+            <div class="container">
+                <ul class="nav navbar-nav" id="nav">
+                  
+                </ul>
+            </div>
+        </header>
+        <?php
+                }
+        ?>
+        </nav>
+       <!-- <div class="container">-->
+            <?php echo $this->content; ?>
+       <!-- </div>-->
+            <!--<hr>-->
+           <!-- <footer>
+                <p>&copy; 2005 - <?php echo date('Y') ?> by Zend Technologies Ltd. <?php echo $this->translate('All rights reserved.') ?></p>
+            </footer>-->
+            <!--footer-->
+            <?php
+                $page=$this->url('login');
+                $page1=$_SERVER['REQUEST_URI'];
+                if($page!=$page1){
+                
+                ?>
+            <div id="footer">
+    <div class="container">
+        <div class="col-sm-2">
+            <h5><strong style="color: #2a6496">Product</strong></h5>
+            <ul class="fa-list">
+                <li><a href="#">Features</a></li>
+                <li><a href="#">Plans</a></li>
+                <li><a href="#">Success Stories</a></li>
+                <li><a href="#">FAQs</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-2">
+            <h5><strong style="color: #2a6496">Resources</strong></h5>
+            <ul class="fa-list">
+                <li><a href="#">Blog</a></li>
+                <li><a href="#">Resources</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-2">
+            <h5><strong style="color: #2a6496">Company</strong></h5>
+            <ul class="fa-list">
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Press Releases</a></li>
+                <li><a href="#">News</a></li>
+                <li><a href="#">Partners</a></li>
+                <li><a href="#">Team</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-2">
+            <h5><strong style="color: #2a6496">Follow</strong></h5>
+            <ul class="fa-list">
+                <li><a href="#">Twitter</a></li>
+                <li><a href="#">Facebook</a></li>
+                <li><a href="#">LinkedIn</a></li>
+                <li><a href="#">Google+</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-2">
+            <h5><strong style="color: #2a6496">Contact Us</strong></h5>
+            <ul class="fa-list">
+                <li><a href="#">Email Sale</a></li>
+                <li><a href="#">(000) 123-4567</a></li>
+                <li><a href="#">Email Support</a></li>
+                <li><a href="#">(000) 123-4567</a></li>
+                <li><a href="#">6am-6p Pt daily</a></li>
+            </ul>
+        </div>
+         <div class="col-sm-2">
+            <div style="float:right;">
+                <span><img src="<?php echo $this->basePath('img/img_like.jpg')?>" width="35px"></span>
+                <span style="padding-left:1px;"><img src="<?php echo $this->basePath('img/img_G.jpg') ?>" width="28px"></span>
+            </div>
+            <div style="padding-top:5px;float:right">
+                <span><img src="<?php echo $this->basePath('img/img_Truste.jpg')?>" width="101px"></span>
+            </div>
+            
+            
+        </div>
+    </div>
+
+</div>
+<footer>
+    <div class="small" style="width: 100%;min-height: 100px; text-align: center;border-top: 1px solid #ddd">
+        <div class="panel-body">
+            Copyright &#169; 2014 Recruiter All Rights Reserved
+            <p>
+                <a style="color: #333; text-decoration: underline " href="#">Privacy Policy</a> - <a style="color: #333; text-decoration: underline" href="#">Terms of Use</a>
+            </p>
+        </div>
+    </div>
+</footer>
+
+<?php
+                }else{
+?>
+<div id="footer" style="padding:1px;">
+    <div class="container">
+    </div>
+</div>
+<footer>
+    <div class="small" style="width: 100%;min-height: 100px; text-align: center;border-top: 1px solid #ddd">
+        <div class="panel-body">
+            Copyright &#169; 2014 Recruiter All Rights Reserved
+            <p>
+                <a style="color: #333; text-decoration: underline " href="#">Privacy Policy</a> - <a style="color: #333; text-decoration: underline" href="#">Terms of Use</a>
+            </p>
+        </div>
+    </div>
+</footer>
+<?php
+                }
+?>
+
+            <!--footer-->
+        </div> <!-- /container -->
+        <?php echo $this->inlineScript() ?>
+    </body>
+</html>

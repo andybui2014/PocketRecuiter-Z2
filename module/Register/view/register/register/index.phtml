@@ -1,0 +1,334 @@
+<?php
+$style="body {
+    background: none repeat scroll 0 0 #ededed;
+    
+}
+.has-error .form-control {
+    border-color: #a94442;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+}
+.container{    
+     font-size: 13px;
+     max-width: 90%;
+}
+.page-header{
+/*width: 859px;
+border-bottom: 1px solid #ddd;*/
+border-bottom: none;
+}
+.page-header1{
+width: 859px;
+border-bottom: 1px solid #ddd;
+
+}
+.form-control{
+    width: 47%;
+}
+.popover {
+    border:none;
+    max-width: 310px;
+   /* border-right: 3px solid rgba(0, 0, 0, 0.8);*/
+   border-right: 3px solid #005595;
+    
+}
+.popover.right {
+    margin-left: 10px;
+}.popover.right > .arrow{
+    border-right-color: rgba(0, 0, 0, 0);
+    left: -7px;
+}
+.popover-content {
+    padding: 8px 4px;
+}
+#Register .message{color: #b81900;}
+.btn-primary {
+    background-color: #005595;
+}
+.modal {
+    
+    z-index: 1250;
+    top: 100;
+}";
+?>
+<style>
+<?php echo $style;?>
+
+</style>
+<?php echo $this->headScript()
+            ->prependFile($this->basePath() . '/js/register.js?vs=1')?>
+<?php
+//$page=$this->url('login');
+//echo "page:".$page;
+//$page1=$_SERVER['REQUEST_URI'];
+//echo "page1:".$page1;
+?>
+<div class="modal fade" tabindex="-1" role="dialog" id="openModalRegister" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content modal-dialog-center">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h2 class="modal-title" id="myModalLabel" style="color:#005595">Registration Complete</h2>
+            </div>
+            <div class="modal-body login-modal" style="height:350px">
+            
+            <div class="col-md-12" >
+            
+                <p>
+                    A confirmation was sent to: <b><span class="mail"></span></b> which you should receive shortly. After you acknowledge that notification, you can go to www.pocket.vienetllc.com as a registered  and view all ....</p>
+<p>
+Your Confirmation email will provide a link to bring you back to your profile so you can complete the remaining sections.
+</p>
+<p>
+Thank you!<br>
+Your Pocket Recruiter Team
+                    
+                </p>
+
+                </div>
+                
+            </div>
+            </div>
+        
+    </div>
+</div>
+<!--Modal-->
+<div class="modal fade" tabindex="-1" role="dialog" id="openModalCompany" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content modal-dialog-center">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h2 class="modal-title" id="myModalLabel" style="color:#005595">Company Profile</h2>
+            </div>
+            <div class="modal-body login-modal">
+                <form id="form-companyProfile" name="form-companyProfile">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                          <div class="form-group">
+                            <input value="" type="text" name="Companyname" id="Companyname" placeholder="Company Name" class="form-control">
+                             <span class="message" id="Companyname_message" style="color:#b81900"></span>
+                          </div>
+                            <input value="" type="text" name="Industry"  placeholder="Industry" class="form-control">
+                            <br>
+                            <input value="" type="text" name="Address"  placeholder="Address" class="form-control">
+                            
+                            <textarea style="display:none" val="" name="Description" placeholder="Description" class="form-control"></textarea>
+                            <br>
+                            <input value="" type="text" name="PhoneNumber"  placeholder="PhoneNumber" class="form-control">
+                            <br>
+                            <input value="" type="text" name="country"  placeholder="country" class="form-control">
+                            <br>
+                            <input value="" type="text" name="emailinfo"  placeholder="emailinfo" class="form-control">
+                            <br>
+                        </div>
+                    </div>
+                    <button id="saveCompanyProfile" style="width:70px" type="button" class="btn btn-primary" data-loading-text="Loading...">Add</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end modal-->
+<div class="header" style="background-color: #333;padding: 10px 0; color: #fff;">
+    <div class="container">
+        <span style="font-size:15px">This is the resume of the future! With Pocket Recruiter,</span><br/>
+     <span style="font-weight:bold;font-size:20px;"> You'll not only get the hiring manager's attention-you'll keep it.</span>
+    </div>
+</div>
+<div class="container">
+    <div class="page-header" style="margin:0;">
+    <h3>
+        <span style="color:#005595;font-weight:bold;font-size:25px">Create a Pocket Recruiter Account</span>
+        <span class="text-right pull-right" style="font-size: 12px;padding-top:8px;padding-right:16px;">Already have a Pocket Recruiter account? <a style="text-decoration: none;" rel="" href="<?php echo $this->url('login')?>" ><span style="padding-left:5px;"><img src="<?php echo $this->basePath('img/btn_SignIn.png') ?>" width="45px"></span></a><a style="text-decoration: none;" rel="" href="<?php echo $this->url('register')?>"><span style="padding-left:5px;"><img src="<?php echo $this->basePath('img/btn_Register.png') ?>" width="58px"> </span></a></span>
+
+    </h3>
+    </div>
+    <div class="page-header1" style="margin:0;">
+    </div>
+    <div class="col-xs-9"  style="padding:0;padding-top:25px;padding-left:2px;">
+    
+    <?php ?>
+        <form role="form"  id="Register" action="">
+            <div class="form-group ">
+                <label for="email">Email address</label>
+              <div class="form-group">
+              
+               
+               <?php echo $this->formInput($form->get('emailaddress'))?>
+                <span class="message" id="Email1_message"></span>
+              </div>
+            </div>
+            <div class="form-group">
+                <label for="credential">First Name</label>
+              <div class="form-group">
+               
+                <?php echo $this->formInput($form->get('firstname'))?> 
+                <span class="message" id="FirstName_message"></span>
+              </div>
+            </div>
+            <div class="form-group">
+                <label for="email">Last Name</label>
+              <div class="form-group">
+                
+                <?php echo $this->formInput($form->get('lastname'))?>  
+                 <span class="message" id="LastName_message"></span>
+              </div>
+            </div>
+            
+            
+            <div class="form-group">
+                <label for="credential">Password</label>
+              <div class="form-group">
+                
+                <?php echo $this->formInput($form->get('password'))?> 
+                 <span class="message" id="Password_message"></span>
+              </div>
+                
+            </div>
+             <div class="form-group">
+                <label for="credential">Retype Password</label>
+                <div class="form-group">
+                
+                <?php echo $this->formInput($form->get('RetypePassword'))?>  
+                 <span class="message" id="RetypePassword_message"></span>
+              </div>
+                
+            </div>
+            <div class="form-group">
+                <label for="credential">Zip code</label>
+                <div class="form-group" style="width:300px">
+                
+                <?php echo $this->formInput($form->get('PostalCode'))?>  
+                 <span class="message" id="PostalCode_message"></span>
+              </div>
+                
+            </div>
+            <div class="form-group">
+                <label for="credential">Account type</label>
+                <br><span style="font-size:11px;"> How dou you want to represent yourse to Employ on Candidate?</span></br>
+                <?php echo $this->formRadio($form->get('usertype'))?>
+              
+                
+            </div>
+            <!-- fg-->
+            <div class="form-group" id="opencompany" style="display:none">
+            <label>Company Name</label>
+           
+            <?php echo $this->formInput($form->get('Companyname'))?> 
+            <span class="message" id="Companyname_message" style="color:#b81900"></span>
+            </div>
+            <!--gf-->
+                            <?php
+
+                            $SourceHtml = "<select class=\"form-control\" id=\"About_us\" name=\"About_us\"><option value=\"\">-Select- </option>";
+                            foreach ($source as $list) {
+                                $code=$list->getName();
+                                $selected = '';
+                                
+                                $SourceHtml .= "<option value=\"$code\" $selected>$code</option>";
+                            }
+                            $SourceHtml .="</select>"; 
+                            //echo "testt:<pre>";print_r($source);echo("</pre>");
+                            //foreach($source as $list){
+                              //  echo "<pre>";print_r($list->getName()) ;echo("</pre>");
+                            //}
+                ?>
+            <div class="form-group">
+                <label for="credential">How did you hear about us?</label><br>
+               <div class="form-group">
+                <?php echo $this->formSelect($form->get('About_us'))?>
+                 <span class="message" id="About_us_message"></span>
+              </div>
+                <div class="form-group">  
+                <input type="checkbox" class="" id="accept" name="accept">                  
+                <!--<?php echo $this->formCheckbox($form->get('accept'))?>-->
+                <span style="font-size:11px;">I have read and accept the terms of Service</span>
+<br><span class="message" id="accept_message"></span>
+              </div>
+                
+                
+            </div>            
+           
+            <div style="padding-bottom:20px;"><a role="button" class="btn btn-primary" id="cmd-register" href="javascript: void(0)">Register</a></div>
+        </form>
+    <!--</div>-->
+
+
+    </div>
+    <div class="col-xs-3" style="padding:0;border-left: 1px solid #ddd; height: 714px;">
+    <div style="height: 50px; ">
+       
+        <div style="width:100%"><img src="<?php echo $this->basePath('img/img_PrivacyPolicy.jpg') ?>" width="200px"></div>
+    </div>
+    <div class="col-lg-12">
+       <h3><span style=""><!--<i class="glyphicon glyphicon-ok"></i>--><img src="<?php echo $this->basePath('img/img_check.png') ?>" width="20px;"></span> <span style="color:#005595;font-weight:bold;font-size:18px">Pocket Recruiter</span></h3>
+      
+        <p style="font-size:11px;">Ut etgestas consectetur risus eget comomdo. Send ornare aliquam blandit. Nunc eu tristique ante, at dictum ligula ..................... eleifend. </p>
+        <p><a style="text-decoration: none;" rel="" href="#"><span><img src="<?php echo $this->basePath('img/btn_ReadMore.png') ?>" width="65px"> </span></a></p>
+        </div>
+    </div>
+</div>
+
+
+<script>
+   $(document).ready(function(){
+        //Login pocket
+        var error = false; 
+         $('#emailaddress').blur(function () {
+              if($('#emailaddress').val()=='')
+                 {
+                     $("#Email1_message").addClass('has-error');
+                        $("#Email1_message").html("Email address is not empty");
+                        
+                }else{
+                        $("#Email1_message").removeClass('has-error').addClass('has-success');
+                        $("#Email1_message").html('');
+                 }
+                
+
+             if($('#emailaddress').val()!=='')
+             {
+                
+                var x = $('#emailaddress').val();
+                var atpos = x.indexOf("@");
+                var dotpos = x.lastIndexOf(".");
+                
+                if(atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length){
+                    error = true;
+                    $("#Email1_message").addClass('has-error');
+                    $("#Email1_message").html("The primary mail is not a valid email address");
+                    }else{
+                    $("#Email1_message").removeClass('has-error').addClass('has-success');
+                    $("#Email1_message").html('');
+                }  
+             }
+                 
+                 
+            });
+        
+        $("#emailaddress").popover({placement:'right',content:"<span style='font-size:11px;'>You'll be asked to verify this later. This email will be used for all communication between yourself and potential clients.</span>", html:true});
+    $("#emailaddress").popover("show");
+    $('#emailaddress').tooltip({placement:'right',content:"<span style='font-size:11px;'>You'll be asked to verify this later. This email will be used for all communication between yourself and potential clients.</span>", html:true});
+    $('#emailaddress').tooltip('show');
+    
+    
+    //
+
+    $('input:radio').on( "click", function() {
+        var usertype=$( "input:checked" ).val();
+        if(usertype=='1'){
+          
+           // $('#openModalselectCompany').modal('show')
+            $('#opencompany').show();
+        }
+        else{
+            $('#opencompany').hide();
+        }
+   
+    
+    });
+    $("#openModalRegister").blur(function(){
+        window.location = 'star';
+    });
+   
+    });
+</script>

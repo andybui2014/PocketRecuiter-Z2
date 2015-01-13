@@ -1,0 +1,21 @@
+<h2>Welcome to Zend Framework 2.0 - Hello module</h2> 
+<h3>
+         <a href="<?php echo $this->url('hello',
+               array('action'=>'add'));?>">Add
+            </a>
+</h2> 
+<table border=1 cellpadding="10" cellspacing="10" style="width:900px;">
+<?php foreach($this->news as $item) : ?>
+   <tr>
+      <td style="width: 20%;"><?php echo $this->escapeHtml($item->name);?></td>
+      <td style="width: 65%;"><?php echo $this->escapeHtml($item->content);?></td>
+      <td style="width: 15%;">
+         <a href="<?php echo $this->url('hello',
+               array('action'=>'edit', 'id' => $item->id));?>">Edit</a>
+           <a href="<?php echo $this->url('hello',
+               array('action'=>'delete', 'id' => $item->id));?>">Delete
+            </a>
+      </td>
+   </tr>
+<?php endforeach;?>
+</table>   

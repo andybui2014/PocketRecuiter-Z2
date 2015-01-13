@@ -1,0 +1,70 @@
+<style>
+<!--
+.row{
+   padding: 10px;
+   border: 1px solid #ccc;
+   margin-top: 10px;
+   width: 80%;
+}
+.editor{
+   width:    400px;
+   height: 200px;
+}
+-->
+
+</style>
+<h2>Welcome to Zend Framework 2.0 - Hello module</h2> 
+<h3 style="border: solid 1px #ccc; padding: 10px;"><?php echo $action;?></h3>
+
+<h3>Form</h3>
+<?php 
+$form = $this->form;
+$form->setAttribute('action', $this->url('hello', array('action' => 'add')));
+$form->prepare();
+
+//Field id
+$id          = $this->formInput($form->get('id'));
+//Field Name
+$labelName      = $this->formLabel($form->get('name'));
+$name          = $this->formInput($form->get('name'));
+$errorName      = $this->formElementErrors($form->get('name'));
+//Field Content
+$labelContent   = $this->formLabel($form->get('content'));
+$content       = $this->formTextarea($form->get('content'));
+$errorContent   = $this->formElementErrors($form->get('content'));
+//Field Submit
+$submit    = $this->formInput($form->get('submit'));
+// ###########################Tao Element###################
+?>
+<div>
+<?php 
+//open form
+echo $this->form()->openTag($form);
+echo $id;
+?>
+
+<table class="row">
+
+   <tr>
+      <td><?php echo $labelName ?></td>
+      <td><?php echo $name?></td>
+      <td><?php echo $errorName?></td>
+   </tr>
+   <tr>
+      <td><?php echo $labelContent ?></td>
+      <td><?php echo $content?></td>
+      <td><?php echo $errorContent?></td>
+   </tr>
+   
+   <tr>
+      <td></td>
+      <td><?php echo $submit?></td>
+      <td></td>
+   </tr>
+</table>
+
+<?php
+// close form 
+echo $this->form()->closeTag($form);
+?>
+</div>
