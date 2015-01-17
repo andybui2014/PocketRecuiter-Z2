@@ -11,18 +11,11 @@ pocketMain.prototype = {
      */
     init: function(){
         $("#btn-login").unbind('click').bind('click',this.logIn);
-        //"#credential").unbind('click').bind('click',this.logIn);
         $('#show-login').unbind('click').bind('click',this.reset);
 		$('#btn-logout').unbind('click').bind('click',this.logOut);
 		$('#resetpass').unbind('click').bind('click',this.resetPass);
 		$('#newpass').unbind('click').bind('click',this.setnewPass);
 		$('#Cannewpass').unbind('click').bind('click',this.cancelnewPass);
-        $('#credential').bind('keypress', function(e) {
-            if(e.keyCode==13){
-               // alert("tetst");
-                pocketMain.prototype.logIn();
-            }
-        }); 
     },
     /**
      *  logOut

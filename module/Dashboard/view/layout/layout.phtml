@@ -1,0 +1,349 @@
+<?php echo $this->doctype();
+function echoActiveClassIfRequestMatches($requestUri)
+{
+    $current_file_name = basename($_SERVER['REQUEST_URI'], ".php");
+    //echo "<br><br>testt:".$current_file_name;
+    if ($current_file_name == $requestUri)
+        echo 'class="active-146EA3"';
+}?>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+   <link href="<?=URL_THEMES.'css/bootstrap.min.css';?>" rel="stylesheet">
+    <link href="<?=URL_THEMES.'css/datepicker.css';?>" rel="stylesheet">
+    <link href="<?=URL_THEMES.'css/main.css';?>" rel="stylesheet">
+    <script src="<?=URL_THEMES.'js/jquery-1.11.0.js';?>"></script>
+    <script src="<?=URL_THEMES.'js/bootstrap.min.js';?>"></script>
+    <script src="<?=URL_THEMES.'js/bootstrap-datepicker.js';?>"></script>
+    <script src="<?=URL_THEMES.'js/pocket.main.js';?>"></script>
+    <style>
+        @font-face {
+            font-family: Open Sans;
+            /* src: url(sansation_light.woff);*/
+        }body {
+            background: none repeat scroll 0 0 #ededed;
+            font-family: Open Sans;
+
+        }
+        .navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:hover, .navbar-default .navbar-nav>.active>a:focus {
+            background-color: #146EA3;
+        }
+        .active-146EA3 { background-color: #146EA3;}
+        .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+            background-color: #146EA3;
+            color: #3BCFF7!important;;
+        }
+    </style>
+    </head>
+    <body>
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal-dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel"></h4>
+                </div>
+                <div class="modal-body login-modal">
+                    <div id="modal-content"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- Navigation -->
+<?php
+//$loginClient = $this->layout()->loginclient;
+$loginClient = $this->userLogin;
+?>
+<nav class="navbar  navbar-default navbar-fixed-top" role="navigation">
+<?php if(empty($loginClient)){?>
+    <div class="nav-ribbon navbar-header">
+        <div class="nav-ribbon-left pull-right">
+            <?php $loginClient = $this->userLogin; if(!empty($loginClient)){ ?>
+                <strong><?=$loginClient['emailaddress'];?></strong> / <a href="javascript: void(0)" id="btn-logout" data-url="">Logout</a>
+            <?php }else{
+                if($_SERVER['REQUEST_URI']!=URL_BASE.'login'){
+                    ?>
+
+                    <a style="font_size:13px;" href="<?=URL_BASE;?>login"><b>Sign In or Join</b></a>
+                <?php }}
+            ?>
+        </div>
+    </div>
+<?php } ?>
+
+<div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+
+        <a href="<?= URL_BASE . 'star' ?>"><img height="52px" src="<?=URL_THEMES.'images/logo.png'?>" alt="" tilte=""/></a>
+
+    </div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <?php if(empty($loginClient)){ ?>
+            <ul class="nav navbar-nav navbar-right" style="margin-right:0.2%;" >
+                <?php
+                $page=URL_BASE . 'login';
+                if($_SERVER['REQUEST_URI']!=$page){
+
+
+                    ?>
+                    <li><a href="#" style="color:#333"><strong style="font-size:13px">Match Opportunity</strong></a></li>
+
+                    <li><a href="#" style="color:#333"><strong style="font-size:13px">Features</strong></a></li>
+                    <li><a href="#" style="color:#333"><strong style="font-size:13px">Plans</strong></a></li>
+                    <li><a href="#" style="color:#333"><strong style="font-size:13px">Success Stones</strong></a></li>
+                    <li><a href="#" style="color:#333"><strong style="font-size:13px">Resources</strong></a></li>
+                    <li><a href="#" style="color:#333"><strong style="font-size:13px">Contact Us</strong></a></li>
+                <?php } ?>
+            </ul>
+        <?php }else{ ?>
+            <ul class="nav nav-pills navbar-right small">
+
+                <li class="dropdown">
+                        <span class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <strong><?=$loginClient['emailaddress']?></strong><span class="caret"></span>
+                        </span>
+                    <ul class="dropdown-menu" role="menu">
+                        <?php
+
+                        if($loginClient["usertype"]==1)
+                        {
+
+                            ?>
+                            <li><a href="<?= URL_BASE . 'client/profile' ?>"><i class="glyphicon glyphicon-user"></i> Edit Profile</a></li>
+                        <?php
+                        }
+
+                        ?>
+
+                        <!-- <li class="divider"></li>-->
+                        <!--<li><a href="javascript: void(0)" id="btn-logout" data-url="<?=$this->layout()->logout;?>"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>-->
+                        <li><a href="javascript: void(0)" id="btn-logout" data-url=""><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
+                    </ul>
+                </li>
+                <li id='Notifications'><a href="#">Notifications</a></li>
+                <?php
+                if($loginClient["usertype"]==1)
+                {
+                    ?>
+                    <li class="dropdown">
+                        <span class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <strong>Settings</strong><span class="caret"></span>
+                        </span>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="<?= URL_BASE ?>companyprofile/profile?companyid=<?= $loginClient["CompanyID"] ?>&pageajax=profile"><i class="glyphicon glyphicon-user"></i> Company Profile</a></li>
+                            <?php
+                            if($loginClient["Role"]=='admin')
+                            {
+                                ?>      <li class="divider"></li>
+                                <li><a href="<?= URL_BASE . 'companyprofile/list'?>"><i class="glyphicon glyphicon-list" style="padding-right:4px;"></i>List Company</a></li>
+                            <?php
+                            }
+                            ?>
+
+                            <?php
+                            if($loginClient["Role"]=='admin'|| $loginClient["Role"]=='staff')
+                            {
+                                ?>      <li class="divider"></li>
+                                <li><a href="<?= URL_BASE . 'client/listuser?CompanyID='.$loginClient["CompanyID"] ?>"><i class="glyphicon glyphicon-list-alt" style="padding-right:4px;"></i>List Account</a></li>
+                            <?php
+                            }
+                            ?>
+                        </ul>
+                    </li>
+                <?php
+                }else if($loginClient["usertype"]==2){
+
+                    ?>
+                    <li><a href="#">Settings</a></li>
+                <?php
+                }
+                ?>
+                <li><a href="#">Help</a></li>
+            </ul>
+        <?php } ?>
+
+    </div>
+
+</div>
+<?php if(!empty($loginClient)){ ?>
+    <?php if($loginClient['usertype']==1){ ?>
+        <header class="sb-page-header">
+            <div class="container">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown active" id="dasboard-test">
+                        <a  class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            Dashboard <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu" style="margin-top: -1px">
+                            <li><a href="#">Dashboard</a></li>
+                            <li><a href="#">Manage Test</a></li>
+                        </ul>
+                    </li>
+                    <?php
+                    $current_file_name = basename($_SERVER['REQUEST_URI'], ".php");
+                    //echo "testt:".$current_file_name;
+
+                    ?>
+                    <li class="dropdown <?php if($current_file_name=='careerlist'||$current_file_name=='careercreate') echo 'active-146EA3'?>" id="PostOpportunity">
+
+                        <a  class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            Post Opportunity <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu" style="margin-top: -1px">
+                            <li><a href="#">Opportunity List</a></li>
+                            <li><a href="#">New Opportunity</a></li>
+                        </ul>
+                    </li>
+                    <li <?=echoActiveClassIfRequestMatches("careermatch")?>><a  href="#">Match Candidate</a></li>
+                    <li <?=echoActiveClassIfRequestMatches("activities")?>><a href="#">Activities</a></li>
+                    <li <?=echoActiveClassIfRequestMatches("list")?>><a href="#">Notifications</a></li>
+                    <li <?=echoActiveClassIfRequestMatches("watch-list")?>><a  href="#">Watch List</a></li>
+                </ul>
+            </div>
+        </header>
+    <?php }elseif($loginClient['usertype']==2){ ?>
+        <header class="sb-page-header">
+            <div class="container">
+                <ul class="nav navbar-nav" id="nav">
+                    <li class="active" id=""><a  href="#">Profile Builder</a></li>
+                    <li id="myprofile"><a  href="#">My Profile</a></li>
+                    <li id="Activities"><a href="<?= URL_BASE . 'candidate/activities' ?>">Activities</a></li>
+                    <li id="Opportunities"><a  href="#">Match Opportunities</a></li>
+                </ul>
+            </div>
+        </header>
+    <?php }}?>
+<?php
+$page=URL_BASE.'login';
+if($_SERVER['REQUEST_URI']==$page){
+    ?>
+    <header class="sb-page-header" style="height:50px">
+        <div class="container">
+            <ul class="nav navbar-nav" id="nav">
+
+            </ul>
+        </div>
+    </header>
+<?php
+}
+?>
+
+<!-- /.container -->
+
+</nav>
+        <?php echo $this->content; ?>
+
+<?php
+$page=URL_BASE.'login';
+if($_SERVER['REQUEST_URI']!=$page){
+    ?>
+    <div id="footer">
+        <div class="container">
+            <div class="col-sm-2">
+                <h5><strong style="color: #2a6496">Product</strong></h5>
+                <ul class="fa-list">
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">Plans</a></li>
+                    <li><a href="#">Success Stories</a></li>
+                    <li><a href="#">FAQs</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-2">
+                <h5><strong style="color: #2a6496">Resources</strong></h5>
+                <ul class="fa-list">
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Resources</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-2">
+                <h5><strong style="color: #2a6496">Company</strong></h5>
+                <ul class="fa-list">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Press Releases</a></li>
+                    <li><a href="#">News</a></li>
+                    <li><a href="#">Partners</a></li>
+                    <li><a href="#">Team</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-2">
+                <h5><strong style="color: #2a6496">Follow</strong></h5>
+                <ul class="fa-list">
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">LinkedIn</a></li>
+                    <li><a href="#">Google+</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-2">
+                <h5><strong style="color: #2a6496">Contact Us</strong></h5>
+                <ul class="fa-list">
+                    <li><a href="#">Email Sale</a></li>
+                    <li><a href="#">(000) 123-4567</a></li>
+                    <li><a href="#">Email Support</a></li>
+                    <li><a href="#">(000) 123-4567</a></li>
+                    <li><a href="#">6am-6p Pt daily</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-2">
+                <div style="float:right;">
+                    <span><img src="<?=URL_THEMES?>images/img_like.jpg" width="35px"></span>
+                    <span style="padding-left:1px;"><img src="<?=URL_THEMES?>images/img_G.jpg" width="28px"></span>
+                </div>
+                <div style="padding-top:5px;float:right">
+                    <span><img src="<?=URL_THEMES?>images/img_Truste.jpg" width="101px"></span>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+    <footer>
+        <div class="small" style="width: 100%;min-height: 100px; text-align: center;border-top: 1px solid #ddd">
+            <div class="panel-body">
+                Copyright &#169; 2014 Recruiter All Rights Reserved
+                <p>
+                    <a style="color: #333; text-decoration: underline " href="#">Privacy Policy</a> - <a style="color: #333; text-decoration: underline" href="#">Terms of Use</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+<?php }
+else{
+    ?>
+    <div id="footer" style="padding:1px;">
+        <div class="container">
+        </div>
+    </div>
+    <footer>
+        <div class="small" style="width: 100%;min-height: 100px; text-align: center;border-top: 1px solid #ddd">
+            <div class="panel-body">
+                Copyright &#169; 2014 Recruiter All Rights Reserved
+                <p>
+                    <a style="color: #333; text-decoration: underline " href="#">Privacy Policy</a> - <a style="color: #333; text-decoration: underline" href="#">Terms of Use</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+<?php
+}
+?>
+<!--Footer-->
+<!--End Container-->
+<script>
+    $('ul.nav li.dropdown').hover(function() {
+        $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
+    }, function() {
+        $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
+    });
+</script>
+</body>
+</html>

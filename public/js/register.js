@@ -247,17 +247,15 @@ register.prototype = {
             if(error==false){
                 var Register = $('#Register').serializeArray();
                 var company=$('#company-form').serializeArray();
-                
                 $.ajax({
                     url:  'register/do-register' ,
                     data:Register,
                     type: 'POST',
-                    
                     success: function(xhr){
                        
                       // alert("usertype:"+xhr.usertype);
-                       console.log(xhr);
-                     alert(xhr);
+                       //console.log(c);
+                     //alert(xhr.success);
                      // alert("erro:"+xhr.error);
                         if(xhr.success){
                            // alert("usertype:"+xhr.usertype);
@@ -313,7 +311,7 @@ register.prototype = {
                             //uid.parent().removeClass('has-success').addClass('has-error');
                         }
                     }
-                },'json');
+                });
             }else{
 
                 $this.button('reset');

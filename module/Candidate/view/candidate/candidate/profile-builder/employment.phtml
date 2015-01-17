@@ -1,0 +1,489 @@
+<?php
+$helper = $this->layout()->_helper;
+$getUserArray=$this->client;
+$getCandidates=$this->getCandidates;
+?>
+<style>
+    .btn-edit:hover{cursor: pointer;text-decoration: underline}
+	.btn-editjob:hover{cursor: pointer;text-decoration: underline}
+    .qst-remove{color: #bbb}
+    .qst-remove:hover{color: #333; cursor: pointer}
+	.qst-removejob{color: #bbb}
+    .qst-removejob:hover{color: #333; cursor: pointer}
+
+    ul#nav-left{margin:0;padding:7px 0;margin-bottom: 10px;list-style: none; border-top: 1px solid #bbb;border-bottom: 1px solid #bbb}
+    ul#nav-left li{line-height: 35px;}
+    ul#nav-left a{color: #777}
+    ul#nav-left .active{color: #428bca}
+
+
+        /****/
+
+    .breadcrumb {
+        width: 100%;
+        /*centering*/
+        padding:3px;
+        border: 1px solid #ddd;
+        display: inline-block;
+        /*box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.35);*/
+        /*overflow: hidden;*/
+        /*border-radius: 5px;*/
+        /*Lets add the numbers for each link using CSS counters. flag is the name of the counter. to be defined using counter-reset in the parent element of the links*/
+        counter-reset: flag;
+    }
+
+    .breadcrumb a {
+        font-weight: bold;
+        text-align: center;
+        text-decoration: none;
+        outline: none;
+        display: block;
+        float: left;
+        font-size: 12px;
+        line-height: 36px;
+        color: white;
+        /*need more margin on the left of links to accomodate the numbers*/
+        padding: 0 30px;
+        background: #666;
+        background: linear-gradient(#666, #333);
+        position: relative;
+    }
+        /*since the first link does not have a triangle before it we can reduce the left padding to make it look consistent with other links*/
+    .breadcrumb a:first-child {
+        padding-left: 46px;
+        border-radius: 5px 0 0 5px; /*to match with the parent's radius*/
+    }
+    .breadcrumb a:first-child:before {
+        left: 14px;
+    }
+    .breadcrumb a:last-child {
+        border-radius: 0 5px 5px 0; /*this was to prevent glitches on hover*/
+        padding-right: 20px;
+    }
+
+        /*hover/active styles*/
+    .breadcrumb a.active, .breadcrumb a:hover{
+        background: #333;
+        background: linear-gradient(#333, #000);
+    }
+    .breadcrumb a.active:after, .breadcrumb a:hover:after {
+        background: #333;
+        background: linear-gradient(135deg, #333, #000);
+    }
+
+        /*adding the arrows for the breadcrumbs using rotated pseudo elements*/
+    .breadcrumb a:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: -18px; /*half of square's length*/
+        /*same dimension as the line-height of .breadcrumb a */
+        width: 36px;
+        height: 36px;
+        /*as you see the rotated square takes a larger height. which makes it tough to position it properly. So we are going to scale it down so that the diagonals become equal to the line-height of the link. We scale it to 70.7% because if square's:
+        length = 1; diagonal = (1^2 + 1^2)^0.5 = 1.414 (pythagoras theorem)
+        if diagonal required = 1; length = 1/1.414 = 0.707*/
+        transform: scale(0.707) rotate(45deg);
+        /*we need to prevent the arrows from getting buried under the next link*/
+        z-index: 1;
+        /*background same as links but the gradient will be rotated to compensate with the transform applied*/
+        background: #666;
+        background: linear-gradient(135deg, #666, #333);
+        /*stylish arrow design using box shadow*/
+        box-shadow:
+            /*2px -2px 0 2px rgba(0, 0, 0, 0.4),3px -3px 0 2px rgba(255, 255, 255, 0.1);*/
+            2px -2px 0 2px #bbb,
+            3px -3px 0 2px #eee;
+        /*
+            5px - for rounded arrows and
+            50px - to prevent hover glitches on the border created using shadows*/
+        border-radius: 0 5px 0 50px;
+    }
+        /*we dont need an arrow after the last link*/
+    .breadcrumb a:last-child:after {
+        content: none;
+    }
+        /*we will use the :before element to show numbers*/
+    .breadcrumb a:before {
+        /*content: counter(flag);*/
+        /*counter-increment: flag;*/
+        /*some styles now*/
+        border-radius: 100%;
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+        margin: 8px 0;
+        position: absolute;
+        top: 0;
+        left: 30px;
+        background: #444;
+        background: linear-gradient(#444, #222);
+        font-weight: bold;
+    }
+
+
+    .flat a, .flat a:after {
+        background: white;
+        color: black;
+        transition: all 0.5s;
+    }
+    .flat a:before {
+        background: white;
+        box-shadow: 0 0 0 1px #ccc;
+    }
+    .flat a:hover, .flat a.active,
+    .flat a:hover:after, .flat a.active:after{
+        background: #2a6496; color: #fff;
+    }
+    .logo{
+       /* background: url('<?=URL_THEMES?>images/avatar_none.jpg') no-repeat ;*/
+       <?php
+        $image=URL_MEDIA_PHOTO.$getCandidates["image"];
+       ?>
+       background: url('<?php if(!empty($getCandidates["image"])) echo  $image; else echo URL_THEMES."images/avatar_none.jpg";?>') no-repeat;
+        width: 211px;
+        height: 165px;
+    }
+
+        /****/
+
+</style>
+<div class="container">
+
+    <div class="row" style="padding-top: 40px;">
+        <div class="col-md-3">
+           <div class="text-center">
+                <div class="logo"><a href="<?= URL_BASE ?>candidate/upload-photo"><img src="<?=URL_THEMES?>images/bg_grey_text.png" style="float:right;padding-top:140px;"></a></div>
+
+            </div>
+            <span  style="font-size: 12px;color: #005595;"><?= $getUserArray["emailaddress"]?></span><br/>
+            <span style="font-weight:bold;font-size:13px">View my profile</span> <br/>
+            <span>
+                <img src="<?=URL_THEMES?>images/USA_flag.jpg"></span><span style="font-size:13px;padding-left:5px"><?=$getUserArray["Country"]?><?php if($getUserArray["Country"]=="") echo "United State";?></span><span style="padding-left:5px;font-size:13px" class=""><?=$getUserArray["Address1"]?><?php if($getUserArray["Address1"]!="") echo ", "; ?> <?=$getUserArray["State"]?></span>
+            </span>
+            <br><span><strong style="font-size:13px">Expected Salary: <?=$getCandidates["minimumsalary"]?><?php if($getCandidates["minimumsalary"]!="") echo "-";?><?=$getCandidates["maximumsalary"]?><?php if($getCandidates["maximumsalary"]!="")echo "K";?></strong></span><br/>
+            <p style="padding: 10px 0">
+                <!--<i class="lbl-log">Edit</i>>-->
+                <a href="<?= URL_BASE ?>candidate/editoverview"><img src="<?=URL_THEMES?>images/btn_edit.png"></a>
+            </p>
+            <ul id="nav-left">
+                <li><a href="<?=$helper->url('profile-builder?utm_source=contact','candidate');?>" class="active"><strong>Profile builder</strong></a></li>
+                <li><a href="<?=$helper->url('profile','candidate');?>">Overview</a></li>
+                <li><a href="<?=$helper->url('contact-info','candidate');?>">Contact Info</a></li>
+				<li><a href="<?=$helper->url('employment','candidate');?>">Employment</a></li>
+                <li><a href="<?=$helper->url('portfolio','candidate');?>">Portfolio</a></li>
+                <li><a href="<?=$helper->url('vieweducation','candidate');?>">Education</a></li>
+                <li><a href="<?=$helper->url('skills?utm_source=index','candidate');?>">Skills</a></li>
+                <li><a href="<?=$helper->url('references','candidate');?>">References</a></li>
+                <li><a href="<?=$helper->url('skilltest','candidate');?>">Tests</a></li>
+                <li><a href="<?=$helper->url('interest','candidate');?>">Interest</a></li>
+            </ul>
+             <p style="font-size:13px;color:#777">Last signed: <?= date('M d, Y',strtotime($getUserArray["Lastsigned"])) ?></p>
+        </div>
+        <div class="col-md-9">
+            <div class="page-header" style="color: #2a6496 ;margin-top:0">
+                <h2  style="color: #2a6496 ;margin-top:0"><span class="glyphicon glyphicon-briefcase"></span> <strong>Profile Builder</strong></h2>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <div class="breadcrumb flat">
+                        <a href="<?=$helper->url('profile-builder?utm_source=contact','candidate');?>" <?=$this->step =='contact'? 'class="active"':'';?>>Contact Info</a>
+                        <a href="<?=$helper->url('profile-builder?utm_source=education','candidate');?>" <?=$this->step =='education'? 'class="active"':'';?>>Education</a>
+                        <a href="<?=$helper->url('profile-builder?utm_source=employment','candidate');?>" <?=$this->step =='employment'? 'class="active"':'';?>>Employment</a>
+                        <a href="<?=$helper->url('profile-builder?utm_source=skills','candidate');?>"  <?=$this->step =='skills'? 'class="active"':'';?>>Skills</a>
+                        <a href="<?=$helper->url('profile-builder?utm_source=portfolio','candidate');?>" <?=$this->step =='portfolio'? 'class="active"':'';?>>Portfolio</a>
+                        <span class="pull-right" style="position: relative;vertical-align: bottom;font-weight: bold;margin: 7px 10px auto auto"><?=$this->stepCount;?></span>
+                    </div>
+                    <div class="col-md-9" style="padding-left:0;">
+
+                        <form id="employment-form" role="form">
+						 <div id="divemployment">
+                            <input type="hidden" name="empId" id="empId"/>
+                            <div class="form-group">
+                                <label>Company Name (no abbreviations,please)</label>
+                                <input name="companyName" type="text" class="form-control" placeholder="">
+                            </div>
+                            <div class="form-group">
+                                <label>Position Held</label>
+                                <input name="posotionHeld"  type="text" class="form-control" placeholder="">
+                            </div>
+
+
+
+                            <div class="col-md-6" style="margin:0;padding:0 50px 0 0">
+                                <div class="form-group">
+                                    <label> <strong>Start Date</strong></label>
+                                    <div class="input-group date" id="datetimepicker8">
+                                        <input type="text" name="startDate" class="form-control">
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6" style="margin:0;padding: 0 50px 0 0">
+                                <div class="form-group">
+                                    <label> <strong>End Date</strong></label>
+                                    <div class="input-group date" id="datetimepicker9">
+                                        <input type="text" name="endDate" class="form-control">
+                                    <span class="input-group-addon"><span class="glyphicon-calendar glyphicon"></span>
+                                    </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label><strong>Description (optional)</strong></label>
+
+                                <textarea id="empDesc" name="description" class="form-control"></textarea>
+                            </div>
+						  </div>
+						  
+						   
+						 <div><a id="Job_Functions" href="#">&nbsp;</a></div>
+						<div class="col-md-12" style="padding:0">
+                        <div class="panel panel-default">
+						
+                            <div class="panel-heading">
+							
+								<table width="100%">
+									<tr>
+										<th width="60%">Job Functions</th>
+										<th width="20%">%</th>
+										<th width="20%"></th>
+									</tr>
+								</table>
+                                
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <div class="table-responsive">
+
+                                    <table id="jobfunction" class="table-hover" width="100%" >
+                                       <?php
+									   if(!empty($this->jobfunctions))
+									   {
+											foreach($this->jobfunctions as $jobfunctions){
+											$pecent=100*$jobfunctions["Percentage"];
+									   ?>
+										<tr> 
+											<td width="60%"><?=$jobfunctions["JobFucntion"]?></td>
+											<td width="20%"><?=round($pecent,2)?>%</td>
+											<td style="float:right;padding-right:10px">
+											<span id="btn-editjob" class="btn-editjob" data-id="<?=$jobfunctions['JobFunctionID'];?>" style="color: #4cae4c"><strong>Edit</strong></span> &nbsp;&nbsp;
+                                                <span><i data-text="<?=$jobfunctions['JobFucntion'];?>" data-id="<?=$jobfunctions['JobFunctionID'];?>" id='qst-removejob' class="glyphicon glyphicon-remove qst-removejob"></i></span></td>
+										</tr>
+										<?php
+										}}
+										?>
+                                    </table>
+							<div id="divjobfunction" style="display:none;margin-top:20px">
+                            <input type="hidden" name="JobFunctionID" id="JobFunctionID"/>
+                            <div class="form-group">
+                                <label>Job Function Name </label>
+								<select name="JobFucntion" id="JobFucntion" class="form-control">
+									
+									<?php
+									$core= new PR_Api_Core_CandidateClass();
+									$getjob=$core->getjobfunctions();
+									
+									if(!empty($getjob)){
+										foreach($getjob as $list){
+									?>
+									<option value="<?=$list["JobFunctionID"]?>" <?php if($list["JobFunctionID"]=="1") echo "selected";?>><?=$list["JobFucntion"]?></option>
+									<?php
+										}
+									}
+									?>
+								</select>
+                                <!--<input name="JobFucntion" type="text" class="form-control" placeholder="Project Manager" >-->
+                            </div>
+                            <!--<div class="form-group">
+                                <label>Experience</label>
+								
+                                <select name="CredentialExperienceID" id="CredentialExperienceID" class="form-control">
+									<option >Select</option>
+									<?php
+									$core= new PR_Api_Core_CandidateClass();
+									$Experience=$core->getExperience($getCandidates["CandidateProfileID"]);
+									if(!empty($Experience)){
+										foreach($Experience as $list){
+									?>
+									<option value="<?=$list["CredentialExperienceID"]?>"><?=$list["title"]?></option>
+									<?php
+										}
+									}
+									?>
+								</select>
+                            </div>-->
+							<div class="form-group">
+								<?php
+									$pecent=$this->totalPercentage;
+									$total=100-$pecent;
+									//echo "tetst:".$total
+								?>
+                                <label>Percentage (%)</label>
+                                <!--<select name="Percentage" id="Percentage" class="form-control">
+									<option>Select</option>
+									<option value="0.05"<?php if($total==0.05) echo "selected" ?>>5 %</option>
+									<option value="0.1" <?php if($total==0.1) echo "selected" ?>>10 %</option>
+									<option value="0.15" <?php if($total==0.15) echo "selected" ?>>15 %</option>
+									<option value="0.2" <?php if($total==0.2) echo "selected" ?>>20 %</option>
+									<option value="0.25" <?php if($total==0.25) echo "selected" ?>>25 %</option>
+									<option value="0.3" <?php if($total==0.3) echo "selected" ?>>30 %</option>
+									<option value="0.35" <?php if($total==0.35) echo "selected" ?>>35 %</option>
+									<option value="0.4" <?php if($total==0.4) echo "selected" ?>>40 %</option>
+									<option value="0.45" <?php if($total==0.45) echo "selected" ?>>45 %</option>
+									<option value="0.5" <?php if($total==0.5) echo "selected" ?>>50 %</option>
+									<option value="0.55" <?php if($total==0.55) echo "selected" ?>>55 %</option>
+									<option value="0.6" <?php if($total==0.6) echo "selected" ?>>60 %</option>
+									<option value="0.65" <?php if($total==0.65) echo "selected" ?>>65 %</option>
+									<option value="0.7" <?php if($total==0.7) echo "selected" ?>>70 %</option>
+									<option value="0.75" <?php if($total==0.75) echo "selected" ?>>75 %</option>
+									<option value="0.8" <?php if($total==0.8) echo "selected" ?>>80 %</option>
+									<option value="0.85" <?php if($total==0.85) echo "selected" ?>>85 %</option>
+									<option value="0.9" <?php if($total==0.9) echo "selected" ?>>90 %</option>
+									<option value="0.95" <?php if($total==0.95) echo "selected" ?>>95 %</option>
+									<option value="1" <?php if($total==1) echo "selected" ?> >100 %</option>
+								</select>-->
+								<input name="Percentage" id="Percentage" type="text" class="form-control" placeholder="" value="<?=$total?>" >
+                            </div>
+
+
+
+						  </div>
+									<div style="margin-top:10px">
+									<?php 
+										if($this->totalPercentage<100){
+									?>
+									<button data-status="view" data-step="employment" id="add-anotherjob" data-loading-text="Loading..." type="button" class="btn btn-sm btn-success" ><strong>+ Add Another</strong></button>
+									<span style="padding-left:10px;"><button data-step="employment" id="cancel" data-loading-text="Loading..." type="button" class="btn btn-sm btn-success" style="display:none"><strong>Cancel</strong></button></span>
+									<?php
+									}
+									?>
+									</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                            <div class="form-group">
+                                <button data-status="add" data-step="employment" id="add-another" data-loading-text="Loading..." type="button" class="btn btn-sm btn-success" type="button"><strong> Save</strong></button>
+                            </div>
+
+
+
+                        </form>
+
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="pull-right">
+                            <button class="btn btn-sm btn-default" type="button" id="cmd-back1" data-back="education"><strong><i class="glyphicon glyphicon-chevron-left"></i></strong></button>
+                            <button class="btn btn-sm btn-success" type="button" id="cmd-next1" data-next="skills"><strong><i class="glyphicon glyphicon-chevron-right"></i></strong></button>
+                        </div>
+                    </div>
+					
+                    <div class="col-md-12" style="padding-left:0">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong>Employment List</strong>
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <div class="table-responsive">
+
+                                    <table id="employmentList" class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th width="15%">Company Name</th>
+                                            <th width="25%">Position Held</th>
+                                            <th width="10%">Start Date</th>
+                                            <th width="10%">End Date</th>
+                                            <th width="25%">Description</th>
+                                            <th width="13%"></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php foreach($this->list as $key=>$item){ ?>
+                                            <tr>
+                                                <td><span><?=$item['CompanyName'];?></span></td>
+                                                <td><span>
+                                                        
+														 <?php
+                                                    $string = $item['PostionHeld'];
+                                                    $string = (strlen($string) > 13) ? substr($item['PostionHeld'],0,25).'...' : $string;
+                                                    echo '<span>'.$string.'</span>';
+                                                    ?>
+                                                    </span></td>
+                                                <td>
+                                                    <?php
+                                                    if (($timestamp = strtotime($item['StartDate'])) !== false)
+                                                        $startDate = date("m/d/Y", $timestamp);
+                                                    echo '<span>'.$startDate.'</span>';
+                                                    ?>
+                                                </td>
+
+                                                <td>
+                                                    <?php
+                                                    if (($timestamp = strtotime($item['EndDate'])) !== false)
+                                                        $startDate = date("m/d/Y", $timestamp);
+                                                    echo '<span>'.$startDate.'</span>';
+                                                    ?>
+                                                </td>
+                                                <td>
+
+                                                    <?php
+                                                    $string = $item['Description'];
+                                                    $string = (strlen($string) > 13) ? substr($item['Description'],0,25).'...' : $string;
+                                                    echo '<span>'.$string.'</span>';
+                                                    ?>
+                                                </td>
+                                                <td>
+                                                    <span class="btn-edit" data-id="<?=$item['CandidateEmploymentID'];?>" style="color: #4cae4c"><strong>Edit</strong></span> &nbsp;&nbsp;
+                                                    <span><i data-text="<?=$item['CompanyName'];?>" data-id="<?=$item['CandidateEmploymentID'];?>" class="glyphicon glyphicon-remove qst-remove"></i></span>
+                                                </td>
+                                            </tr>
+                                        <?php } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 30px">
+                            <button id="cmd-back" data-back="education" class="btn btn-default" type="button"><strong>Back</strong></button> &nbsp;
+                            <!--<button class="btn btn-default disabled" type="button"><strong>Skip</strong></button> &nbsp;-->
+                            <button id="cmd-next" data-next="skills" type="button" class="btn btn-success" type="button"><strong>Next</strong></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="<?=URL_THEMES;?>js/pocket.candidate.js?vs=1"></script>
+<script type="text/javascript">
+	/* $('#employment-form #employment-form#add-anotherjob').unbind('click').bind('click',function(){
+        $('#divemployment').hide();
+		$('#add-another').hide()
+        $('#divjobfunction').show();
+		//$('#employment-form #add-anotherjob').attr('data-status','add').html('<strong> + add Job Function</strong>');
+        
+    });
+	 $('#btn-editjob').unbind('click').bind('click',function(){
+        $('#divemployment').hide();
+        $('#divjobfunction').show();
+        
+    });*/
+	//======
+    $("#datetimepicker8").datepicker({ autoclose: true, todayHighlight: true });
+    $("#datetimepicker9").datepicker({ autoclose: true, todayHighlight: true });
+    //======
+    var prCandidate= new pocketCandidate();
+    $('#employmentList .btn-edit').unbind('click').bind('click',prCandidate.editEmployment);
+	$('#jobfunction .btn-editjob').unbind('click').bind('click',prCandidate.editJobFuntion);
+    $('#employmentList .qst-remove').unbind('click').bind('click',prCandidate.deleteEmployment);
+	//('#jobfunction #qst-removejob').unbind('click').bind('click',prCandidate.deleteJobFunction);
+
+</script>

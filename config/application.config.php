@@ -63,20 +63,22 @@
    // 'service_manager' => array(),
 );*/
 return array(
-'modules' => array(
-'Application',
-'Home',
-'Hello',
-'Login',
-'Register'
-),
-'module_listener_options' => array(
-'config_glob_paths' => array(
-'config/autoload/{,*.}{global,local}.php',
-),
-'module_paths' => array(
-'./module',
-'./vendor',
-),
-),
+    'modules' => array(
+    'Application',
+    'Home',
+    'Login',
+    'Register',
+    'Dashboard',
+    'Notifications',
+    'Candidate',
+    ),
+    'module_listener_options' => array(
+        'config_glob_paths' => array(
+            'config/autoload/{,*.}{global,local}.php',
+        ),
+        'module_paths' => array(
+        './module',
+        './vendor',
+        ),
+    ),
 );
