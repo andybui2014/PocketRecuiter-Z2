@@ -3,7 +3,7 @@
 return array(
     'db' => array(
         'driver' => 'Pdo',
-        'dsn' => 'mysql:host=localhost;dbname=poket',
+        'dsn' => 'mysql:host=localhost;dbname=pocket_recruiter_web',
         'driver_options' => array(
             PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'",
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
