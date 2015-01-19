@@ -214,7 +214,8 @@ $loginClient = $this->userLogin;
         <header class="sb-page-header">
             <div class="container">
                 <ul class="nav navbar-nav" id="nav">
-                    <li class="active" id=""><a  href="<?php echo $this->url('candidate', array('action' => 'profile-builder', 'utm_source' =>'contact')); ?>">Profile Builder</a></li>
+                   <!-- <li class="active" id=""><a  href="<?php echo $this->url('candidate', array('action' => 'profile-builder', 'utm_source' =>'contact')); ?>">Profile Builder</a></li> -->
+                    <li class="active" id=""><a  href="<?php echo $this->url('candidate', array('action' => 'profile-builder'), array('query' => array('utm_source' => 'contact',),)); ?>">Profile Builder</a></li>
                     <li id="myprofile"><a  href="#">My Profile</a></li>
                     <li id="Activities"><a href="<?= URL_BASE . 'candidate/activities' ?>">Activities</a></li>
                     <li id="Opportunities"><a  href="#">Match Opportunities</a></li>

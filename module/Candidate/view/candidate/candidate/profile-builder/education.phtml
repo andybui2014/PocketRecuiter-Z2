@@ -1,7 +1,7 @@
 <?php
-$helper = $this->layout()->_helper;
+//$helper = $this->layout()->_helper;
 $educationList = $this->list;
-$core = new PR_Api_Core_CandidateClass();
+//$core = new PR_Api_Core_CandidateClass();
 $getUserArray=$this->client;
 $getCandidates=$this->getCandidates;
 
@@ -166,16 +166,16 @@ $getCandidates=$this->getCandidates;
                 <a href="<?= URL_BASE ?>candidate/editoverview"><img src="<?=URL_THEMES?>images/btn_edit.png"></a>
             </p>
             <ul id="nav-left">
-                <li><a href="<?=$helper->url('profile-builder?utm_source=contact','candidate');?>" class="active"><strong>Profile builder</strong></a></li>
-                <li><a href="<?=$helper->url('profile','candidate');?>">Overview</a></li>
-                <li><a href="<?=$helper->url('contact-info','candidate');?>">Contact Info</a></li>
-				<li><a href="<?=$helper->url('employment','candidate');?>">Employment</a></li>
-                <li><a href="<?=$helper->url('portfolio','candidate');?>">Portfolio</a></li>
-                <li><a href="<?=$helper->url('vieweducation','candidate');?>">Education</a></li>
-                <li><a href="<?=$helper->url('skills?utm_source=index','candidate');?>">Skills</a></li>
-                <li><a href="<?=$helper->url('references','candidate');?>">References</a></li>
-                <li><a href="<?=$helper->url('skilltest','candidate');?>">Tests</a></li>
-                <li><a href="<?=$helper->url('interest','candidate');?>">Interest</a></li>
+                <li><a href="" class="active"><strong>Profile builder</strong></a></li>
+                <li><a href="">Overview</a></li>
+                <li><a href="">Contact Info</a></li>
+				<li><a href="">Employment</a></li>
+                <li><a href="">Portfolio</a></li>
+                <li><a href="">Education</a></li>
+                <li><a href="">Skills</a></li>
+                <li><a href="">References</a></li>
+                <li><a href="">Tests</a></li>
+                <li><a href="">Interest</a></li>
             </ul>
              <p style="font-size:13px;color:#777">Last signed: <?= date('M d, Y',strtotime($getUserArray["Lastsigned"])) ?></p>
         </div>
@@ -187,11 +187,11 @@ $getCandidates=$this->getCandidates;
                 <div class="panel-body">
 
                     <div class="breadcrumb flat">
-                        <a href="<?=$helper->url('profile-builder?utm_source=contact','candidate');?>" <?=$this->step =='contact'? 'class="active"':'';?>>Contact Info</a>
-                        <a href="<?=$helper->url('profile-builder?utm_source=education','candidate');?>" <?=$this->step =='education'? 'class="active"':'';?>>Education</a>
-                        <a href="<?=$helper->url('profile-builder?utm_source=employment','candidate');?>" <?=$this->step =='employment'? 'class="active"':'';?>>Employment</a>
-                        <a href="<?=$helper->url('profile-builder?utm_source=skills','candidate');?>"  <?=$this->step =='skills'? 'class="active"':'';?>>Skills</a>
-                        <a href="<?=$helper->url('profile-builder?utm_source=portfolio','candidate');?>" <?=$this->step =='portfolio'? 'class="active"':'';?>>Portfolio</a>
+                        <a href="" <?=$this->step =='contact'? 'class="active"':'';?>>Contact Info</a>
+                        <a href="" <?=$this->step =='education'? 'class="active"':'';?>>Education</a>
+                        <a href="" <?=$this->step =='employment'? 'class="active"':'';?>>Employment</a>
+                        <a href=""  <?=$this->step =='skills'? 'class="active"':'';?>>Skills</a>
+                        <a href="" <?=$this->step =='portfolio'? 'class="active"':'';?>>Portfolio</a>
                         <span class="pull-right" style="position: relative;vertical-align: bottom;font-weight: bold;margin: 7px 10px auto auto"><?=$this->stepCount;?></span>
                     </div>
                     <div class="col-md-9" style="padding-left:0;">
@@ -266,7 +266,8 @@ $getCandidates=$this->getCandidates;
                                                     $startYear = date("Y", $timestamp);
                                                 if (($timestamp = strtotime($item['enddate'])) !== false)
                                                     $endYear = date("Y", $timestamp);
-                                                $detailEducation = $core->getCandidateEducation($item['CredentialExperienceID']);
+                                                //$detailEducation = $core->getCandidateEducation($item['CredentialExperienceID']);
+                                                $detailEducation = "";
                                         ?>
                                             <tr>
                                             <td><?=$item['institution_name'];?></td>

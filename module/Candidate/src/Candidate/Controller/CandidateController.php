@@ -31,9 +31,80 @@ class CandidateController extends ApplicationControllerAction {
         return $view;
     }
 
+    private function attribute_child($candiate_id, $ID, $disable) {
+        $source1 = "";
+        if(!empty($ID)){
+            $sm = $this->getServiceLocator();
+            $core = $sm->get('Candidate\Model\prApiCoreCandidateClass');
+            $client = prSession::getSession(prSession::SESSION_USER);
+            $Child = $core->get_attribute_child($candiate_id,$ID);
+            if(!empty($Child)){
+
+                foreach($Child as $item){
+                    $sub = $this->attribute_child($candiate_id, $item['ID'],$disable);
+                    $sel1 ="<div class='col-md-2'></div>";
+                    $Track1 ='';
+                    if(!empty($item['TemplateID'])){
+                        $option = "";
+
+                        foreach($item['TemplateID'] as $itemInfo){
+                            if($itemInfo['Value'] == $item['Value']){
+                                $selected11 = 'selected="selected"';
+                            } else{
+                                $selected11 ='';
+                            }
+                            $option .= "<option value='".$itemInfo['Value']."' ".$selected11.">".$itemInfo['Description']."</option>";
+                        }
+                        $sel1 = " <select class='form-control attr-value'  style='color:#5d629c' ".$disable."> ".$option."</select>";
+                    }
+
+                    if($item['TrackYearsOfExperience'] && $item['TrackLevelofInterest']){
+                        $selected = '';
+                        $option_exp ='';
+
+                        for($i=1; $i<6; $i++){
+                            if($i==$item['LevelofInterest']){
+                                $selected = 'selected="selected"';
+                            } else{
+                                $selected ='';
+                            }
+                            $option_exp .= "<option value='".$i."' ".$selected.">".$i."</option>";
+                        }
+
+                        $Track1 = "<div class='col-md-2' style='padding-right:0; color:#706d67;line-height:34px'>Years of Experience </div>
+                                                                  <div class='col-md-1' style='padding:0'><input type='text' style='color:#706d67' ".$disable." class='form-control attr-YoE' value='".$item['YearsofExperience']."'></div>
+                                                                  <div class='col-md-2' style='text-align:right; color:#706d67;line-height:34px'>Level of Interest</div>
+                                                                  <div class='col-md-1' style='padding:0'>
+                                                                    <select class='form-control attr-LevelofInterest' ".$disable."  style='color:#706d67'>
+                                                                            '.$option_exp.'
+                                                                    </select>
+                                                                  </div>";
+                    }
+
+                    $source1 .="<ul style='margin-top:10px' class='attr-attr'>
+                                                            <li>
+                                                                <div class='col-md-12' style='padding:0'>
+                                                                     <div style='line-height:34px;padding:0;margin-bottom:10px' attr-id=".$item['ID']." class='col-md-4 attrid'>".$item['Attribute']."</div>
+                                                                    <div class='col-md-2' style='padding:0; margin-bottom:10px'>
+                                                                        ".$sel1."
+                                                                    </div>
+                                                                    ".$Track1."
+                                                                </div>
+                                                            </li>
+
+                                                        </ul>";
+                    $source1 .=  $sub;
+                }
+
+            }
+        }
+        return $source1;
+    }
+
     public function profileBuilderAction(){
-       // $utm_source = $this->getRequest()->getPost();
-        $utm_source = $this->params()->fromRoute('utm_source');
+       //$utm_source = $this->params()->fromRoute('utm_source');
+        //
+        $utm_source = $this->params()->fromQuery('utm_source');
         $utm_source = trim($utm_source);
         if(!empty($utm_source) && isset($utm_source)){
             $client = prSession::getSession(prSession::SESSION_USER);
@@ -43,10 +114,6 @@ class CandidateController extends ApplicationControllerAction {
             $Candidateprofile_ID=$getUserArray["CandidateProfileID"];
             $getCandidates=$core->getCandidateProfile($Candidateprofile_ID);
 
-            //$this->view->client = $getUserArray;
-            //$this->view->getCandidates=$getCandidates;
-            //$this->view->step = $params['utm_source'];
-
             switch($utm_source){
                 case 'contact':
                     $info = $core->getContactInfo($client['UserID']);
@@ -55,21 +122,32 @@ class CandidateController extends ApplicationControllerAction {
                         'getCandidates'=>$getCandidates,
                         'step'=>$utm_source,
                         'stepCount'=>'1/5 Steps',
-                        'info'=>$info,
-                        'utm_source'=>$utm_source
+                        'info'=>$info
                     ));
+                    $view->setTemplate('candidate/candidate/profile-builder/contact.phtml');
+                    $this->layout()->setVariables(array('userLogin'=>$client));
+                    return $view;
+                    break;
+                case 'education':
+                    //$list = $core->getCandidateEducationList($client['UserID']);
+                    $list ="";
+                    $view = new ViewModel(array(
+                        'client'=>$getUserArray,
+                        'getCandidates'=>$getCandidates,
+                        'step'=>$utm_source,
+                        'stepCount'=>'2/5 Step',
+                        'list'=>$list
+                    ));
+                    $view->setTemplate('candidate/candidate/profile-builder/education.phtml');
                     $this->layout()->setVariables(array('userLogin'=>$client));
                     return $view;
                     break;
                 case 'skills':
-
-
                     $tree = '';
                     // -----------------Attribute-----------------------------
-
                     $html ='';
                     $attr_p0_list = $core->get_attribute_p0($Candidateprofile_ID);
-                    /* if(!empty($attr_p0_list)){
+                     if(!empty($attr_p0_list)){
 
                         foreach($attr_p0_list as $attr_p0Info){
                             if(!empty($attr_p0Info['Candidate_ProfileID'])){
@@ -157,18 +235,31 @@ class CandidateController extends ApplicationControllerAction {
                         }
 
                     }
-                 */
                     $view = new ViewModel(array(
-                        'getCandidates'=>'',
-                        'step'=>'',
-                        'stepCount'=>'',
-                        'html'=>'',
-                        'utm_source'=>$utm_source
+                        'client'=>$getUserArray,
+                        'getCandidates'=>$getCandidates,
+                        'step'=>$utm_source,
+                        'stepCount'=>'4/5 Steps',
+                        'html'=>$html
                     ));
+                    $view->setTemplate('candidate/candidate/profile-builder/skills.phtml');
                     $this->layout()->setVariables(array('userLogin'=>$client));
                     return $view;
                     break;
+                case 'portfolio':
+                    $list = $core->getListCandidatePortfolio($client['UserID']);
 
+                    $view = new ViewModel(array(
+                        'client'=>$getUserArray,
+                        'getCandidates'=>$getCandidates,
+                        'step'=>$utm_source,
+                        'stepCount'=>'5/5 Steps',
+                        'list'=>$list
+                    ));
+                    $view->setTemplate('candidate/candidate/profile-builder/portfolio.phtml');
+                    $this->layout()->setVariables(array('userLogin'=>$client));
+                    return $view;
+                    break;
                 default:
                    // $this->render('profile-builder/index');
                     break;
@@ -176,6 +267,94 @@ class CandidateController extends ApplicationControllerAction {
         }else{
             //$this->render('profile-builder/index');
         }
+
+    }
+
+    public function doUpdateSkillsAction(){
+        $ajaxRes = array('success'=>0,'info'=>null);
+        if($this->getRequest()->isXmlHttpRequest()){
+            $params = $this->getRequest()->getPost('data');
+
+                if(isset($params)){
+                    $attributeIDs = $params;
+                } else{
+                    $attributeIDs = array();
+                }
+
+            $client = prSession::getSession(prSession::SESSION_USER);
+            $sm = $this->getServiceLocator();
+            $core = $sm->get('Candidate\Model\prApiCoreCandidateClass');
+            if($core->updateCandidateAttribute($client['CandidateProfileID'],$attributeIDs)){
+                $ajaxRes['success'] = 1;
+            }
+        }
+
+        //return
+        $this->getResponse()->getHeaders()->addHeaders(array('Content-Type'=>'application/json;charset=UTF-8'));
+        return $this->getResponse()->setContent(Json::encode($ajaxRes));
+
+    }
+
+    public function stepNextContactAction(){
+        $ajaxRes = array('success'=>0,'info'=>null);
+        if($this->getRequest()->isXmlHttpRequest()){
+            $params['data'] = $this->getRequest()->getPost('data');
+            if(!empty($params['data']) && sizeof($params['data'])){
+                $client = $client = prSession::getSession(prSession::SESSION_USER);
+                $data = array();
+                $errors = array();
+                foreach($params['data'] as $item){
+                    if($item['name']=='firstname'){
+                        if(empty($item['value'])){
+                            $errors['firstname'] = 1;
+                        }else{
+                            $data['firstname'] = $item['value'];
+                        }
+                    }
+                    if($item['name']=='lastname'){
+                        if(empty($item['value'])){
+                            $errors['lastname'] = 1;
+                        }else{
+                            $data['lastname'] = $item['value'];
+                        }
+                    }
+                    if($item['name']=='email'){
+                        if(empty($item['value'])){
+                            $errors['email'] = 1;
+
+                        }else{
+                            if (!filter_var($item['value'], FILTER_VALIDATE_EMAIL)) {
+                                $errors['email'] = 1;
+                            }else{
+                                $data['emailaddress'] = $item['value'];
+                            }
+                        }
+                    }
+
+                    if($item['name']=='phone')          $data['PhoneNumber']  = $item['value'];
+                    if($item['name']=='url')            $data['URL']  = $item['value'];
+                    if($item['name']=='city')           $data['City']  = $item['value'];
+                    if($item['name']=='country')        $data['Country']  = $item['value'];
+                    if($item['name']=='zipcode')        $data['PostalCode']  = $item['value'];
+
+                }
+
+                if(empty($errors)){
+
+                    $sm = $this->getServiceLocator();
+                    $core = $sm->get('Candidate\Model\prApiCoreCandidateClass');
+                    $core->saveContactInfo($client['UserID'],$data);
+                    $ajaxRes['success'] = 1;
+                }else{
+                    $ajaxRes['success'] = 0;
+                    $ajaxRes['info'] = $errors;
+                }
+
+            }
+        }
+
+        $this->getResponse()->getHeaders()->addHeaders(array('Content-Type'=>'application/json;charset=UTF-8'));
+        return $this->getResponse()->setContent(Json::encode($ajaxRes));
     }
 
 }
