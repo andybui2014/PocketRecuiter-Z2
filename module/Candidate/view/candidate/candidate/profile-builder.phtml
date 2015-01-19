@@ -1,0 +1,29 @@
+<?php
+switch($this->utm_source){
+    case 'contact':
+        echo $this->partial('candidate/candidate/profile-builder/contact.phtml',
+            array(
+                'getCandidates' => $this->getCandidates,
+                'step'=>$this->step,
+                'stepCount'=>$this->stepCount,
+                'info'=>$this->info)
+        );
+        break;
+
+    case 'skills':
+        echo $this->partial('candidate/candidate/profile-builder/skills.phtml',
+            array(
+                'getCandidates' => $this->getCandidates,
+                'step'=>$this->step,
+                'stepCount'=>$this->stepCount,
+                'html'=>$this->html)
+        );
+        break;
+    default:
+
+    break;
+}
+?>
+
+
+

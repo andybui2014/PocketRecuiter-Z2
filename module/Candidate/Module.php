@@ -3,7 +3,7 @@ namespace Candidate;
 
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
-
+use Candidate\Model\prApiCoreCandidateClass;
 class Module
 {
     public function getConfig()
@@ -24,16 +24,16 @@ class Module
          );
     }
 
-    /*public function getServiceConfig()
+    public function getServiceConfig()
     {
         return array(
             'factories' => array(
-                'Notifications\Model\prApiCoreNotiClass' => function($sm) {
+                'Candidate\Model\prApiCoreCandidateClass' => function($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $table = new prApiCoreNotiClass($dbAdapter);
+                    $table = new prApiCoreCandidateClass($dbAdapter);
                     return $table;
                 },
             ),
         );
-    }*/
+    }
 }
