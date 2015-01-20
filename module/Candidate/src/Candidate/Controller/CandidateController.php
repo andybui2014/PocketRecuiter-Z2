@@ -105,6 +105,7 @@ class CandidateController extends ApplicationControllerAction {
        //$utm_source = $this->params()->fromRoute('utm_source');
         //
         $utm_source = $this->params()->fromQuery('utm_source');
+		//echo "testt:".$utm_source;
         $utm_source = trim($utm_source);
         if(!empty($utm_source) && isset($utm_source)){
             $client = prSession::getSession(prSession::SESSION_USER);
@@ -129,16 +130,50 @@ class CandidateController extends ApplicationControllerAction {
                     return $view;
                     break;
                 case 'education':
-                    //$list = $core->getCandidateEducationList($client['UserID']);
-                    $list ="";
+                    $list = $core->getCandidateEducationList($client['UserID']);
+                    //echo "tetst:<pre>";print_r($list);echo"</pre>";
                     $view = new ViewModel(array(
                         'client'=>$getUserArray,
                         'getCandidates'=>$getCandidates,
                         'step'=>$utm_source,
-                        'stepCount'=>'2/5 Step',
-                        'list'=>$list
+                        'stepCount'=>'2/5 Steps',
+                        'list'=>$list, 
+                        'sm'=>$sm                       
                     ));
                     $view->setTemplate('candidate/candidate/profile-builder/education.phtml');
+                    $this->layout()->setVariables(array('userLogin'=>$client));
+                    return $view;
+                    break;
+				case 'employment':                    
+                    $list = $core->getCandidateEmployments($client['UserID']);                   
+                    if(isset($params["id"])||!empty($params["id"])){
+                    $id=$params["id"];
+                    $jobfunctions=$core->get_jobfuntion($id);                    
+                    $employment=$core->getCandidateEmployment($id);                   
+                    $totalPercentage=$core->totalPercentage($id);
+                    $totalprcent=round($totalPercentage["totalPercentage"]*100,2);
+                    }
+                    
+                    $view = new ViewModel(array(
+                        'client'=>$getUserArray,
+                        'getCandidates'=>$getCandidates,
+                        'step'=>$utm_source,
+                        'stepCount'=>'3/5 Steps',
+                        'list'=>$list, 
+                        'sm'=>$sm,
+                                                                      
+                    ));
+                    if(!empty($jobfunctions))
+                    {
+                      $view->jobfunctions=$jobfunctions;  
+                    }
+                    if(!empty($employment)){
+                        $view->employment=$employment;
+                    }
+                    if(!empty($totalprcent)){
+                        $view->totalPercentage=$totalprcent;
+                    }
+                    $view->setTemplate('candidate/candidate/profile-builder/employment.phtml');
                     $this->layout()->setVariables(array('userLogin'=>$client));
                     return $view;
                     break;

@@ -16,6 +16,7 @@ use Zend\Db\Sql\Select;
 class UserTable extends AbstractTableGateway {
 
     protected $table = 'user';
+     protected $authenticate = false;
 
     public function __construct(Adapter $adapter) {
         $this->adapter = $adapter;
@@ -97,9 +98,12 @@ class UserTable extends AbstractTableGateway {
             "emailaddress"=>$user["emailaddress"],
             "password"=>$user["password"],
             "HeardFrom"=>$user["HeardFrom"],
-            "PostalCode"=>$user["PostalCode"],
-            "CompanyID"=>$user["CompanyID"]
+            "PostalCode"=>$user["PostalCode"]
+            //"CompanyID"=>$user["CompanyID"]
             );
+            if(!empty($user["CompanyID"])){
+             $data["CompanyID"]=$user["CompanyID"];   
+            }
        
             if (!$this->insert($data))
                 return false;
@@ -118,7 +122,51 @@ class UserTable extends AbstractTableGateway {
                 ));
         return $email;
     }
+    
+    public function loadAndCheckAuthentication($authData){
+        $this->authenticate = false;
+        if (empty($authData['emailaddress']) || empty($authData['password'])) {
+            //$errors->addError(2, 'emailaddress or password is empty but required');
+            return false;
+        }
 
+        $row = $this->select(array('emailaddress' => $authData['emailaddress'],'password'=>$authData['password']))->current();
+        if (!$row)
+            return false;
+        else
+            {
+                $this->authenticate = true;
+            }
+        $user = new Entity\User(array(
+                    
+                    'UserID' => $row->UserID,
+                    'usertype' => $row->usertype,
+                    'firstname' => $row->firstname,
+                    'middlename' => $row->middlename,
+                    'lastname' => $row->lastname,
+                    'dob' => $row->dob,
+                    'CompanyID' => $row->CompanyID,
+                    'CandidateProfileID' => $row->CandidateProfileID,
+                    'loginname' => $row->loginname,
+                    'password' => $row->password,
+                    'emailaddress' => $row->emailaddress,
+                    'PhoneNumber' => $row->PhoneNumber,
+                    'Address2' => $row->Address2,
+                    'City' => $row->City,
+                    'State' => $row->State,
+                    'PostalCode' => $row->PostalCode,
+                    'Country' => $row->Country,
+                    'Role' => $row->Role,
+                    'active' => $row->active,
+                    'Lastsigned' => $row->Lastsigned,
+                    'faxnumber' => $row->faxnumber,
+                    'HeardFrom' => $row->HeardFrom,
+                    
+                ));
+        return $user;
+        
+        
+    }
     public function removeStickyNote($id) {
         return $this->delete(array('id' => (int) $id));
     }

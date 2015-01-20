@@ -60,12 +60,16 @@ $loginClient = $this->userLogin;
     <div class="nav-ribbon navbar-header">
         <div class="nav-ribbon-left pull-right">
             <?php $loginClient = $this->userLogin; if(!empty($loginClient)){ ?>
-                <strong><?=$loginClient['emailaddress'];?></strong> / <a href="javascript: void(0)" id="btn-logout" data-url="">Logout</a>
+                <strong><?=$loginClient['emailaddress'];?></strong> / <a href="javascript: void(0)" id="btn-logout" data-url="<?=$this->url('login', array('action' => 'do-logout'), true); ?>">Logout</a>
             <?php }else{
-                if($_SERVER['REQUEST_URI']!=URL_BASE.'login'){
+                $page=$this->url('home');
+                $page2=$this->url('register');
+                $page1=$_SERVER['REQUEST_URI'];
+				//echo "Testt".$page1;
+                if($page==$page1 || $page2==$page1){
                     ?>
 
-                    <a style="font_size:13px;" href="<?=URL_BASE;?>login"><b>Sign In or Join</b></a>
+                    <a style="font_size:13px;" href="<?php echo $this->url('login');?>"><b>Sign In or Join</b></a>
                 <?php }}
             ?>
         </div>
@@ -125,8 +129,8 @@ $loginClient = $this->userLogin;
                         ?>
 
                         <!-- <li class="divider"></li>-->
-                        <!--<li><a href="javascript: void(0)" id="btn-logout" data-url="<?=$this->layout()->logout;?>"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>-->
-                        <li><a href="javascript: void(0)" id="btn-logout" data-url=""><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
+                        
+                        <li><a href="javascript: void(0)" id="btn-logout" data-url="<?=$this->url('login', array('action' => 'do-logout'), true); ?>"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
                     </ul>
                 </li>
                 <li id='Notifications'><a href="<?= URL_BASE . 'notifications/list' ?>">Notifications</a></li>

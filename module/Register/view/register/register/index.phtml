@@ -48,7 +48,23 @@ border-bottom: 1px solid #ddd;
     
     z-index: 1250;
     top: 100;
-}";
+    text-align: center;
+}
+}
+
+.modal:before {
+  display: inline-block;
+  vertical-align: middle;
+  content: '';
+  height: 100%;
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}
+";
 ?>
 <style>
 <?php echo $style;?>
@@ -219,14 +235,14 @@ Your Pocket Recruiter Team
             <!--gf-->
                             <?php
 
-                            $SourceHtml = "<select class=\"form-control\" id=\"About_us\" name=\"About_us\"><option value=\"\">-Select- </option>";
-                            foreach ($source as $list) {
-                                $code=$list->getName();
-                                $selected = '';
+                          //  $SourceHtml = "<select class=\"form-control\" id=\"About_us\" name=\"About_us\"><option value=\"\">-Select- </option>";
+                           // foreach ($source as $list) {
+                            //    $code=$list->getName();
+                             //   $selected = '';
                                 
-                                $SourceHtml .= "<option value=\"$code\" $selected>$code</option>";
-                            }
-                            $SourceHtml .="</select>"; 
+                               // $SourceHtml .= "<option value=\"$code\" $selected>$code</option>";
+                           // }
+                           // $SourceHtml .="</select>"; 
                             //echo "testt:<pre>";print_r($source);echo("</pre>");
                             //foreach($source as $list){
                               //  echo "<pre>";print_r($list->getName()) ;echo("</pre>");
@@ -327,7 +343,7 @@ Your Pocket Recruiter Team
     
     });
     $("#openModalRegister").blur(function(){
-        window.location = 'star';
+        window.location = 'home';
     });
    
     });

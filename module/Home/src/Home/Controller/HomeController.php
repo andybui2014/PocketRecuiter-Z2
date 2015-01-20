@@ -1,17 +1,20 @@
 <?php
 namespace Home\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
+//use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Home\Form\NewsForm;
+use Application\Controller\ApplicationControllerAction; 
 
-class HomeController extends AbstractActionController
+class HomeController extends ApplicationControllerAction
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
     public function indexAction()
     {
-       // return array(
-        //'welcome' => 'Hello Zend Framework 2.0 - By QHOnline.Info',
-       // );
+       
     }
     
 }

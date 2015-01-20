@@ -381,6 +381,193 @@ class prApiCoreCandidateClass extends AbstractTableGateway
         }
         return $records;
     }
+	 public function getCandidateEducationList($userID)
+    {
+        $errors = prApiError::getInstance();
+        $db = new Sql($this->adapter);
+        $select = $db->select();
+        
+        //
+        $select->from(array('ce'=>'credentialexperience'), 
+            array('CredentialExperienceID','CandidateProfileID','institution_id','startdate','enddate','title','comments','display')
+        );
+        $select->join(array('u'=>'user'),
+            'u.CandidateProfileID = ce.CandidateProfileID',
+            array('UserID')
+        );
+        $select->join(array('i'=>'institution'),
+            'i.institution_id = ce.institution_id',
+            array('institution_name')
+        );
+        $select->where("u.UserID = '$userID'");
+        $select->where("u.usertype = 2");
+
+        $statement = $db->prepareStatementForSqlObject($select);
+        $results = $statement->execute();
+        
+        if(!empty($results))
+        {
+            $records = array();
+            foreach ($results as $result) {
+            $records[] = $result;
+            }
+            return $records;       
+        }else{
+            return null;
+        }       
+       
+    }
+	public function getCandidateEducation($CredentialExperienceID)
+    {
+        //credentialexperience:CredentialExperienceID,CandidateProfileID,institution_id,startdate,enddate,title,comments
+        //--- institution:institution_id,institution_name,created_by_userid,created_datetime,last_updated_by_userid,last_updated_datetime,institution_type
+        $errors = prApiError::getInstance();
+        $db = new Sql($this->adapter);
+        $select = $db->select();
+        $select->from(array('ce'=>'credentialexperience'), array('*'));
+        $select->join(array('i'=>'institution'),
+            'i.institution_id = ce.institution_id',
+            array('institution_name')
+        );
+        $select->join(array('u'=>'user'),
+            'u.CandidateProfileID = ce.CandidateProfileID',
+            array('UserID')
+        );
+        $select->where("ce.CredentialExperienceID = '$CredentialExperienceID'");
+        $statement = $db->prepareStatementForSqlObject($select);
+        $results = $statement->execute();
+        if(!empty($results))
+        {
+            $records = array();
+            foreach ($results as $result) {
+            $records[] = $result;
+            }
+            return $records[0];       
+        }else{
+            return null;
+        }
+    }
+	 public function getCandidateEmployments($userID)
+    {
+        //candidate_employments:CandidateEmploymentID,CandidateProfileID,CompanyName,PostionHeld,StartDate,EndDate,Description,LastUpdated,LastUpdatedByUserID
+        
+        $db = new Sql($this->adapter);
+        $select = $db->select();
+        $select->from(array('caem'=>'candidate_employments'), 
+            array('CandidateEmploymentID','CandidateProfileID','CompanyName','PostionHeld','StartDate','EndDate','Description','LastUpdated','LastUpdatedByUserID')
+        );
+        $select->join(array('u'=>'user'),
+            'u.CandidateProfileID = caem.CandidateProfileID',
+            array('UserID')
+        );
+        $select->where("u.UserID = '$userID'");
+        $select->where("u.usertype = 2");
+        $statement = $db->prepareStatementForSqlObject($select);
+        $results = $statement->execute();
+        if(!empty($results))
+        {
+            $records = array();
+            foreach ($results as $result) {
+            $records[] = $result;
+            }
+            return $records;       
+        }else{
+            return null;
+        }
+    }
+    public function get_jobfuntion($CandidateEmploymentID){
+        
+        $db = new Sql($this->adapter);
+        $select = $db->select();
+        $select->from(array('jb'=>'jobfunction'), array('*'));
+        $select->join(array('crjb'=>'credentialexperiencejobfunction'),
+            'crjb.JobFunctionID=jb.JobFunctionID',
+            array('Percentage','id')
+        );
+        $select->join(array('canem'=>'candidate_employments'),
+            'canem.CandidateEmploymentID=crjb.CandidateEmploymentID',
+            array('*')
+        );
+         $select->where("canem.CandidateEmploymentID = '$CandidateEmploymentID'");
+        $select->where("crjb.Percentage <= 1");
+        
+       $statement = $db->prepareStatementForSqlObject($select);
+        $results = $statement->execute();
+        if(!empty($results))
+        {
+            $records = array();
+            foreach ($results as $result) {
+            $records[] = $result;
+            }
+            return $records;       
+        }else{
+            return null;
+        }
+    }
+    public function getCandidateEmployment($CandidateEmploymentID)
+    {
+        //candidate_employments:CandidateEmploymentID,CandidateProfileID,CompanyName,PostionHeld,StartDate,EndDate,Description,LastUpdated,LastUpdatedByUserID
+        $db = new Sql($this->adapter);
+        $select = $db->select();
+        $select->from(array('caem'=>'candidate_employments'), array('*'));        
+        $select->join(array('u'=>'user'),
+            'u.CandidateProfileID = caem.CandidateProfileID',
+            array('UserID')
+        );
+        $select->where("caem.CandidateEmploymentID = '$CandidateEmploymentID'");       
+        
+       $statement = $db->prepareStatementForSqlObject($select);
+        $results = $statement->execute();
+        if(!empty($results))
+        {
+            $records = array();
+            foreach ($results as $result) {
+            $records[] = $result;
+            }
+            return $records;       
+        }else{
+            return null;
+        }
+        
+    }
+    public function totalPercentage($CandidateEmploymentID){
+        $db = new Sql($this->adapter);
+        $select = $db->select();              
+        $select->columns(array(
+    "totalPercentage" => new \Zend\Db\Sql\Expression("SUM(Percentage)")
+    ));  
+         $select->from('credentialexperiencejobfunction');
+        $select->where(array("CandidateEmploymentID" =>$CandidateEmploymentID));
+        $statement = $db->prepareStatementForSqlObject($select);
+        $results = $statement->execute();
+        if(!empty($results))
+        {
+            $records = array();
+            foreach ($results as $result) {
+            $records[] = $result;
+            }
+            return $records[0];       
+        }else{
+            return null;
+        }
+  } 
+  public function getjobfunctions(){
+        $db = new Sql($this->adapter);
+        $select = $db->select();
+        $select->from(array('jb'=>'jobfunction'), array('*'));
+        $statement = $db->prepareStatementForSqlObject($select);
+        $results = $statement->execute();
+        if(!empty($results))
+        {
+            $records = array();
+            foreach ($results as $result) {
+            $records[] = $result;
+            }
+            return $records;       
+        }else{
+            return null;
+        } 
+ }
 
 }
 ?>

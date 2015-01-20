@@ -34,11 +34,7 @@ class LoginController extends ApplicationControllerAction
     function doLoginAction()
     {
         $username = $this->getRequest()->getPost('email');
-        $password = $this->getRequest()->getPost('password');
-
-        /*echo "<pre>";
-        echo "login= "; print_r($password);
-        echo "</pre>"; die();*/
+        $password = $this->getRequest()->getPost('password');           
 
         $return = array("success" => 0, "error" => "usertype",""=>"");
 
@@ -68,5 +64,15 @@ class LoginController extends ApplicationControllerAction
 
 
     }
+    public function doLogoutAction()
+    {
+       // $this->_helper->layout->disableLayout();
+       // echo "tetst";die();
+        $sestionClient=prSession::clearSessions();
+        $this->layout()->setVariables(array('userLogin'=>$sestionClient));
+        return $this->redirect()->toRoute('login',
+                array('controller'=>'login',
+                    'action' => 'index'));
+    }  
     
 }

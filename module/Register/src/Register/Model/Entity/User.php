@@ -115,7 +115,7 @@ class User {
     }
 
     public function setLastname($lastname) {
-        $this->lastname = $middlename;
+        $this->lastname = $lastname;
         return $this;
     }
     public function getDob() {
@@ -231,11 +231,11 @@ class User {
         return $this;
     }
     public function getActive() {
-        return $this->Active;
+        return $this->active;
     }
 
     public function setActive($Active) {
-        $this->Active = $Active;
+        $this->active = $Active;
         return $this;
     }
     public function getLastsigned() {
@@ -247,11 +247,11 @@ class User {
         return $this;
     }
     public function getFaxnumber() {
-        return $this->Faxnumber;
+        return $this->faxnumber;
     }
 
     public function setFaxnumber($Faxnumber) {
-        $this->Faxnumber = $Faxnumber;
+        $this->faxnumber = $Faxnumber;
         return $this;
     }
 	public function getHeardFrom() {

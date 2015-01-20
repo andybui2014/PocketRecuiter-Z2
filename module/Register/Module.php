@@ -23,9 +23,9 @@ class Module
     public function getServiceConfig() {
         return array(
             'factories' => array(
-                'Register\Model\SourceTable' => function($sm) {
+                'Register\Model\SendMail' => function($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $table = new Model\SourceTable($dbAdapter);
+                    $table = new Model\SendMail($dbAdapter);
                     return $table;
                 },
 				'Register\Model\UserTable' => function($sm) {
